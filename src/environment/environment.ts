@@ -1,15 +1,24 @@
 import "dotenv/config";
 
-const dev = {
-    PORT: 8000,
-    CALLBACK_URL: "http://localhost:8000/login/redirect",
-};
+class Dev {
+    public PORT = 8000;
+    public BASE_URL = `http://localhost:${this.PORT}`
+    public CALLBACK_URL = `${this.BASE_URL}/login/redirect`;
 
-const prod = {
-    PORT: process.env.PORT,
-    CALLBACK_URL: "https://tts-api.herokuapp.com/login/redirect",
-};
+    public CLIENT_BASE_URL = `http://localhost:4200`;
+    public CLIENT_DASHBOARD_URL = `${this.CLIENT_BASE_URL}/dashboard`
+}
 
-export let environment: typeof dev | typeof prod = dev;
+class Prod {
+    public PORT = process.env.PORT;
+    public BASE_URL = `https://tts-api-prod.herokuapp.com`
+    public CALLBACK_URL = `${this.BASE_URL}/login/redirect`;
 
-if (process.env.NODE_ENV === "production") environment = prod;
+    public CLIENT_BASE_URL = `https://tts-app.netlify.app`;
+    public CLIENT_DASHBOARD_URL = `${this.CLIENT_BASE_URL}/dashboard`
+
+}
+
+export let environment: Dev | Prod = new Dev();
+
+if (process.env.NODE_ENV === "production") environment = new Prod();

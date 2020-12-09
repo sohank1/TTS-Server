@@ -11,7 +11,7 @@ export class UserService {
         private UserModel: Model<User>
     ) { }
 
-    private toResponseObject(doc: User): UserResponseObject {
+    public toResponseObject(doc: User): UserResponseObject {
         if (!doc) throw new HttpException('User was not found.', HttpStatus.NOT_FOUND);
         const obj = <UserResponseObject>{ ...doc.toObject() };
 
@@ -36,6 +36,11 @@ export class UserService {
 
     public async get(id: string): Promise<UserResponseObject> {
         return this.toResponseObject(await this.UserModel.findOne({ id }));
+    }
+
+    public async getMe(user: User): Promise<UserResponseObject> {
+        if (!user) throw new HttpException('Please log in.', HttpStatus.UNAUTHORIZED);
+        return this.toResponseObject(user);
     }
 
 }

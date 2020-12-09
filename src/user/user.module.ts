@@ -10,6 +10,7 @@ import { UserService } from './user.service';
       { name: User.name, schema: UserSchema }
     ])
   ],
+  exports: [UserService],
   controllers: [UserController],
   providers: [UserService]
 })
