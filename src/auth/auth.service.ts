@@ -101,7 +101,7 @@ export class AuthService {
                 for (const m of r.data)
                     if (!m.user.bot)
                         tts.members.push({
-                            id: 'yaaaas',
+                            id: m.user.id,
                             username: m.user.username,
                             discriminator: m.user.discriminator,
                             bot: m.user.bot ? true : false,
