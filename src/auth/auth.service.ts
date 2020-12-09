@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { HttpException, HttpService, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { User } from "src/user/user.schema";
 import { Model } from "mongoose";
@@ -9,20 +9,30 @@ import { getAvatarUrl } from "src/user/util/get-avatar-url.util";
 import { Request, Response } from "express";
 import { environment } from "src/environment/environment";
 import { UserService } from "src/user/user.service";
+import { Guild } from "src/guild/guild.schema";
+import { getIconUrl } from "src/guild/util/get-icon.util";
 
 @Injectable()
 export class AuthService {
     constructor(
         @InjectModel(User.name)
-        private Users: Model<User>,
+        private UserModel: Model<User>,
+        @InjectModel(Guild.name)
+        private GuildModel: Model<Guild>,
         private events: EventsGateway,
-        private _userService: UserService
+        private _userService: UserService,
+        private _http: HttpService
     ) { }
 
     public async validateUser(accessToken: string, refreshToken: string, profile: Profile, done: (err: Error, user?: User) => void): Promise<User> {
         try {
-            console.log(profile.guilds.find(g => g.id === "570349873337991203"));
-            const user = await this.Users.findOne({ id: profile.id });
+            // await this.GuildModel.create({ iconUrl: '', members: [], name: '', roles: [] });
+            const tts = await this.fetchUsers();
+            await this.fetchGuild(tts);
+
+            console.log((await this.GuildModel.findOne()).members[6].id);
+
+            const user = await this.UserModel.findOne({ id: profile.id });
             if (user) {
                 const url = getAvatarUrl(profile.id, profile.avatar);
                 const tag = getTag(profile.username, profile.discriminator);
@@ -42,7 +52,7 @@ export class AuthService {
             } else {
                 const url = getAvatarUrl(profile.id, profile.avatar);
 
-                const newUser = new this.Users({
+                const newUser = new this.UserModel({
                     id: profile.id,
                     tag: getTag(profile.username, profile.discriminator),
                     avatarUrl: url.includes("null")
@@ -63,7 +73,6 @@ export class AuthService {
     }
 
     public async redirect(req: Request, res: Response, url: string): Promise<void> {
-        console.log(url, req.query)
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         //@ts-ignore
         if (url) return res.redirect(url);
@@ -77,5 +86,48 @@ export class AuthService {
 
         req.query.redirect ? res.redirect(<string>req.query.redirect)
             : res.redirect(environment.CLIENT_BASE_URL);
+    }
+
+    public async fetchUsers(): Promise<Guild> {
+        const tts = await this.GuildModel.findOne();
+
+        this._http.get(`https://discord.com/api/v8/guilds/${environment.TTS_DISCORD_SERVER_ID}/members?limit=1000`, {
+            headers: {
+                'Authorization': `Bot ${process.env.BOT_TOKEN}`
+            }
+        })
+            .subscribe(async (r) => {
+                tts.members = [];
+                for (const m of r.data)
+                    if (!m.user.bot)
+                        tts.members.push({
+                            id: 'yaaaas',
+                            username: m.user.username,
+                            discriminator: m.user.discriminator,
+                            bot: m.user.bot ? true : false,
+
+                            roles: m.roles.map((id: string) => tts.roles.find(r => r.id === id)),
+                            joinedAt: new Date(m.joined_at),
+                        });
+
+            });
+        return tts;
+    }
+
+    public async fetchGuild(tts: Guild): Promise<void> {
+        this._http.get(`https://discord.com/api/v8/guilds/${environment.TTS_DISCORD_SERVER_ID}`, {
+            headers: {
+                'Authorization': `Bot ${process.env.BOT_TOKEN}`
+            }
+        })
+
+            .subscribe(async (r) => {
+                tts.id = r.data.id;
+                tts.name = r.data.name;
+                tts.iconUrl = getIconUrl(tts.id, r.data.icon);
+                tts.roles = r.data.roles;
+
+                console.log(await tts.updateOne(tts));
+            });
     }
 }
