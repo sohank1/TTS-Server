@@ -128,6 +128,7 @@ export class AuthService {
                 tts.roles = r.data.roles;
 
                 console.log(await tts.updateOne(tts));
+                console.log(await tts.save());
             });
     }
 }
