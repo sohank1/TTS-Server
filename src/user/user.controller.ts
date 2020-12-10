@@ -13,7 +13,7 @@ export class UserController {
         return this._service.getAll();
     }
 
-    @Get('user:id')
+    @Get('user/:id')
     public get(@Param('id') id: string): Promise<UserResponseObject> {
         return this._service.get(id);
     }
