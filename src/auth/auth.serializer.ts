@@ -14,10 +14,12 @@ export class AuthSerializer extends PassportSerializer {
     }
 
     public serializeUser(user: User, done: (err: Error, user?: User) => void): void {
+        console.log('serializeUser...');
         done(null, user._id);
     }
 
     public async deserializeUser(id: string, done: (err: Error, user?: User) => void): Promise<void> {
+        console.log('deserializeUser...');
         const user = await this.Users.findById(id);
         if (user) done(null, user);
     };

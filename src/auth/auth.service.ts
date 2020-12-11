@@ -72,11 +72,9 @@ export class AuthService {
         }
     }
 
-    public async redirect(req: Request, res: Response, url: string): Promise<void> {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        //@ts-ignore
-        if (url) return res.redirect(url);
-        return res.redirect(environment.CLIENT_DASHBOARD_URL);
+    public async redirect(res: Response): Promise<Response> {
+        res.redirect(environment.CLIENT_DASHBOARD_URL);
+        return res.status(200).json({ message: "Successfully redirected." });
     }
 
     public logout(req: Request, res: Response): void {

@@ -18,6 +18,7 @@ export class AuthStrategy extends PassportStrategy(DiscordStrategy) {
     }
 
     public validate(accessToken: string, refreshToken: string, profile: Profile, done: (err: Error, user?: User) => void): Promise<User> {
+        console.log('validating...')
         return this.authService.validateUser(accessToken, refreshToken, profile, done);
     }
 }

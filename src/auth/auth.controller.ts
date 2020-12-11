@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { Controller, Get, Req, Res, UseGuards } from "@nestjs/common";
 import { Request, Response } from "express";
 import { LoginAuthGuard } from "./login-auth.guard";
 import { AuthService } from "./auth.service";
 
-let url: string;
 
 @Controller()
 export class AuthController {
@@ -11,18 +11,13 @@ export class AuthController {
 
     @Get("login")
     @UseGuards(LoginAuthGuard)
-    public login(@Req() req: Request): void {
-        console.log(req.query)
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        //@ts-ignore
-        url = req.query.redirect;
-    }
+    public login(): void { }
 
 
     @Get("login/redirect")
     @UseGuards(LoginAuthGuard)
-    public async redirect(@Req() req: Request, @Res() res: Response): Promise<void> {
-        return this.service.redirect(req, res, url);
+    public async redirect(@Res() res: Response): Promise<Response> {
+        return this.service.redirect(res);
     }
 
 

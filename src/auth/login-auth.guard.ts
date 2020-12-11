@@ -6,6 +6,7 @@ export class LoginAuthGuard extends AuthGuard("discord") {
         const can = await super.canActivate(context);
         if (can) {
             const request = context.switchToHttp().getRequest();
+            console.log('calling super.logIn(request)');
             super.logIn(request);
         }
         return true;
