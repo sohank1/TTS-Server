@@ -7,6 +7,13 @@ import { environment } from "./environment/environment";
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
+
+  app.enableCors({
+    origin: ["https://tts-app.netlify.app", "http://localhost:4200"],
+    credentials: true,
+  });
+
+  app.use(cookieParser())
   app.use(
     session({
       secret: "Testing",
@@ -17,14 +24,10 @@ async function bootstrap(): Promise<void> {
       saveUninitialized: false,
     })
   );
+
   app.use(passport.initialize());
   app.use(passport.session());
 
-
-  app.enableCors({
-    origin: ["https://tts-app.netlify.app", "http://localhost:4200"],
-    credentials: true,
-  });
 
   await app.listen(environment.PORT);
 }
