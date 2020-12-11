@@ -18,8 +18,8 @@ class Prod {
     public BASE_URL = `https://tts-api-prod.herokuapp.com`
     public CALLBACK_URL = `${this.BASE_URL}/login/redirect`;
 
-    public CLIENT_BASE_URL = `http://localhost:3000`;
-    public CLIENT_DASHBOARD_URL = `${this.CLIENT_BASE_URL}`
+    public CLIENT_BASE_URL = `https://tts.app.netlify.app`;
+    public CLIENT_DASHBOARD_URL = `${this.CLIENT_BASE_URL}/dashboard`
 
 }
 
