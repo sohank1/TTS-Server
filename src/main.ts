@@ -20,6 +20,7 @@ async function bootstrap(): Promise<void> {
       secret: "Testing",
       cookie: {
         maxAge: 60 * 1000 * 60 * 24,
+        secure: process.env.NODE_ENV === 'production' ? true : false
       },
       resave: false,
       saveUninitialized: false,
