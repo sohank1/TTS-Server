@@ -20,8 +20,6 @@ export class UserController {
 
     @Get('me')
     public getMe(@Req() req: Request): Promise<UserResponseObject> {
-        console.log(req)
-        console.log(req.user)
-        return this._service.getMe(<User>req.user);
+        return this._service.getMe(req);
     }
 }

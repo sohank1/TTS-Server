@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { Request } from 'express';
 import { Model } from 'mongoose';
 import { UserResponseObject } from './types/UserResponseObject';
 import { User } from './user.schema';
@@ -38,9 +39,10 @@ export class UserService {
         return this.toResponseObject(await this.UserModel.findOne({ id }));
     }
 
-    public async getMe(user: User): Promise<UserResponseObject> {
-        if (!user) throw new HttpException('Please log in.', HttpStatus.UNAUTHORIZED);
-        return this.toResponseObject(user);
+    public async getMe(req: Request): Promise<UserResponseObject> {
+        console.log(req.session)
+        if (!req.user) throw new HttpException('Please log in.', HttpStatus.UNAUTHORIZED);
+        return this.toResponseObject(<User>req.user);
     }
 
 }

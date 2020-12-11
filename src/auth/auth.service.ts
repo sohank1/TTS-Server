@@ -30,8 +30,6 @@ export class AuthService {
             const tts = await this.fetchUsers();
             await this.fetchGuild(tts);
 
-            console.log((await this.GuildModel.findOne()).members[6].id);
-
             const user = await this.UserModel.findOne({ id: profile.id });
             if (user) {
                 const url = getAvatarUrl(profile.id, profile.avatar);
@@ -125,8 +123,8 @@ export class AuthService {
                 tts.iconUrl = getIconUrl(tts.id, r.data.icon);
                 tts.roles = r.data.roles;
 
-                console.log(await tts.updateOne(tts));
-                console.log(await tts.save());
+                await tts.updateOne(tts)
+                await tts.save();
             });
     }
 }
