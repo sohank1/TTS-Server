@@ -9,7 +9,6 @@
     "node": "14.x"
   },
   "scripts": {
-    "prod": "cd ./client && npm i && ng build --prod && cd ../ && npm run build",
     "prebuild": "rimraf dist",
     "build": "cd ./client && npm i && ng build --prod && cd ../ && nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
