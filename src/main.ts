@@ -6,14 +6,13 @@ import * as passport from "passport";
 import * as cookieParser from "cookie-parser";
 import { environment } from "./environment/environment";
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { NotFoundExceptionFilter } from './not-found-exception.filter';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  app.enableCors({
-    origin: ["https://tts-app.netlify.app", "http://localhost:4200", "http://localhost:3000"],
-    credentials: true,
-  });
+  app.useGlobalFilters(new NotFoundExceptionFilter());
+  app.enableCors({ credentials: true });
 
   app.use(cookieParser())
   app.use(
@@ -21,7 +20,7 @@ async function bootstrap(): Promise<void> {
       secret: "Testing",
       cookie: {
         maxAge: 60 * 1000 * 60 * 24,
-        // secure: process.env.NODE_ENV === 'production'
+        secure: process.env.NODE_ENV === 'production'
       },
       resave: false,
       saveUninitialized: false,

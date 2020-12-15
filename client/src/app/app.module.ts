@@ -24,6 +24,7 @@ import { DashboardNavComponent } from './components/nav/dashboard-nav/dashboard-
 import { UserComponent } from './components/user/user.component';
 import { LogoutComponent } from './components/buttons/logout/logout.component';
 import { HttpClientModule } from '@angular/common/http';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { HttpClientModule } from '@angular/common/http';
     DashboardNavComponent,
     UserComponent,
     LogoutComponent,
+    NotFoundComponent,
   ],
   imports: [
     CommonModule,
