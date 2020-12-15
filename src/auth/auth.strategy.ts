@@ -12,7 +12,7 @@ export class AuthStrategy extends PassportStrategy(DiscordStrategy) {
         super({
             clientID: process.env.CLIENT_ID,
             clientSecret: process.env.CLIENT_SECRET,
-            callbackURL: environment.CALLBACK_URL,
+            callbackURL: environment.REDIRECT_URL,
             scope: ["identify", "guilds"],
         });
     }

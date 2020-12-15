@@ -5,21 +5,28 @@ import { LoginAuthGuard } from "./login-auth.guard";
 import { AuthService } from "./auth.service";
 
 
-@Controller()
+@Controller('api')
 export class AuthController {
     constructor(private service: AuthService) { }
 
     @Get("login")
     @UseGuards(LoginAuthGuard)
-    public login(): void { }
+    public async login(): Promise<void> {
+        // return this.service.login(res);
+    }
 
 
     @Get("login/redirect")
     @UseGuards(LoginAuthGuard)
-    public async redirect(@Res() res: Response): Promise<Response> {
-        return this.service.redirect(res);
+    public async redirect(@Req() req: Request, @Res() res: Response): Promise<void> {
+        return this.service.redirect(req, res);
     }
 
+    @Get("auth")
+    // @UseGuards(LoginAuthGuard)
+    public async getHash(@Req() req: Request, @Res() res: Response): Promise<void> {
+        return this.service.getHash(req, res);
+    }
 
     @Get("logout")
     public logout(@Req() req: Request, @Res() res: Response): void {

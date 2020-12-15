@@ -5,9 +5,10 @@ import * as session from "express-session";
 import * as passport from "passport";
 import * as cookieParser from "cookie-parser";
 import { environment } from "./environment/environment";
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap(): Promise<void> {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.enableCors({
     origin: ["https://tts-app.netlify.app", "http://localhost:4200"],
@@ -29,7 +30,6 @@ async function bootstrap(): Promise<void> {
 
   app.use(passport.initialize());
   app.use(passport.session());
-
 
   await app.listen(environment.PORT);
 }

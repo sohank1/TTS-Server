@@ -70,9 +70,42 @@ export class AuthService {
         }
     }
 
-    public async redirect(res: Response): Promise<Response> {
-        res.redirect(environment.CLIENT_DASHBOARD_URL);
-        return res.status(200).json({ message: "Successfully redirected." });
+    public async redirect(req: Request, res: Response): Promise<void> {
+        // res.redirect(environment.CLIENT_DASHBOARD_URL);
+        // return res.status(200).json({ message: "Successfully redirected." });
+        // try {
+        //     const p = new URLSearchParams();
+        //     p.append('client_id', process.env.CLIENT_ID);
+        //     p.append('client_secert', process.env.CLIENT_SECRET);
+        //     p.append('grant_type', 'authorization_code');
+        //     p.append('code', <string>req.query.code);
+        //     p.append('redirect_uri', environment.REDIRECT_URL);
+        //     p.append('scope', 'identify guilds');
+
+        //     const r = await this._http.post('https://discord.com/api/v8/oauth2/token', query.stringify({
+        //         client_id: process.env.CLIENT_ID,
+        //         client_secert: process.env.CLIENT_SECRET,
+        //         grant_type: 'authorization_code',
+        //         code: <string>req.query.code,
+        //         redirect_uri: environment.REDIRECT_URL,
+        //         scope: 'identify guilds'
+        //     }), {
+        //         headers: {
+        //             'Content-Type': 'application/x-www-form-urlencoded'
+        //         }
+        //     }).toPromise();
+
+        //     console.log('data', r.data)
+        //     return r.data;
+        // }
+
+        // catch (err) {
+        //     console.log('err', err.response.data);
+        //     res.send(err.response.data);
+        // }
+
+        //  return res.redirect(environment.CLIENT_LOADING_URL(<string>req.query.code));
+        return res.redirect(environment.CLIENT_DASHBOARD_URL);
     }
 
     public logout(req: Request, res: Response): void {
@@ -82,6 +115,33 @@ export class AuthService {
 
         req.query.redirect ? res.redirect(<string>req.query.redirect)
             : res.redirect(environment.CLIENT_BASE_URL);
+    }
+
+    public async getHash(req: Request, res: Response): Promise<any> {
+        // let r: Promise<AxiosResponse<any>>
+        // try {
+        //     const r = await this._http.post('https://discord.com/api/v6/oauth2/token', {
+        //         client_id: 'e' || process.env.CLIENT_ID,
+        //         client_secert: process.env.CLIENT_SECRET,
+        //         grant_type: 'authorization_code',
+        //         code: req.query.code,
+        //         redirect_uri: environment.CALLBACK_URL,
+        //         scope: 'identify guilds'
+        //     }, {
+        //         headers: {
+        //             'Content-Type': 'application/x-www-form-urlencoded'
+        //         }
+
+        //     }).toPromise();
+
+        //     console.log('data', r.data)
+        //     return r.data;
+        // }
+
+        // catch (err) {
+        //     console.log('err', err.response.data);
+        //     res.send(err.response.data);
+        // }
     }
 
     public async fetchUsers(): Promise<Guild> {
@@ -127,4 +187,8 @@ export class AuthService {
                 await tts.save();
             });
     }
+
+    // public async login(res: Response): Promise<void> {
+    //     // res.redirect(environment.OAUTH_URL);
+    // }
 }

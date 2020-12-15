@@ -1,0 +1,46 @@
+@import "../../../scss/variables.scss";
+
+.content {
+    @include tablet {
+        display: flex;
+        flex-direction: column;
+        margin-left: 15rem;
+        height: 100vh;
+        width: 100vw;
+    }
+
+    p {
+        margin: 2rem 2rem;
+    }
+}
+
+h1 {
+    margin: 2rem auto;
+    text-align: center;
+}
+
+h2 {
+    margin: 2rem auto;
+    text-align: center;
+}
+
+img {
+    width: 45rem;
+    margin: 0.5rem auto;
+}
+
+.orange {
+    color: orange;
+}
+
+.red {
+    color: red;
+}
+
+.green {
+    color: green;
+}
+
+.blue {
+    color: blue;
+}
