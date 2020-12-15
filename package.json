@@ -11,7 +11,7 @@
   "scripts": {
     "prod": "cd ./client && npm i && ng build --prod && cd ../ && npm run build",
     "prebuild": "rimraf dist",
-    "build": "cd ./client && npm i && ng build --prod && cd ../ && npm run start:prod && nest build",
+    "build": "cd ./client && npm i && ng build --prod && cd ../ && nest build && npm run start:prod",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
