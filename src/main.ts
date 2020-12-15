@@ -12,7 +12,7 @@ async function bootstrap(): Promise<void> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.useGlobalFilters(new NotFoundExceptionFilter());
-  app.enableCors({ credentials: true });
+  app.enableCors({ origin: ['localhost:4200', 'https://tts-api-prod.herokuapp.com'], credentials: true });
 
   app.use(cookieParser())
   app.use(

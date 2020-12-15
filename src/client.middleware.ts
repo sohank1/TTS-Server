@@ -21,7 +21,6 @@ export class ClientMiddleware implements NestMiddleware {
     public use(req: Request, res: Response, next: NextFunction) {
         const { baseUrl: url } = req;
 
-        console.log(url)
         if (url.startsWith('/api')) {
             // it starts with /api --> continue with execution
             next();
