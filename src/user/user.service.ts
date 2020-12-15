@@ -40,7 +40,8 @@ export class UserService {
     }
 
     public async getMe(req: Request): Promise<UserResponseObject> {
-        console.log(req.session)
+        console.log(req.session);
+        console.log(req.cookies);
         if (!req.user) throw new HttpException('Please log in.', HttpStatus.UNAUTHORIZED);
         return this.toResponseObject(<User>req.user);
     }

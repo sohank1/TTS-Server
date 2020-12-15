@@ -11,7 +11,7 @@ async function bootstrap(): Promise<void> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.enableCors({
-    origin: ["https://tts-app.netlify.app", "http://localhost:4200"],
+    origin: ["https://tts-app.netlify.app", "http://localhost:4200", "http://localhost:3000"],
     credentials: true,
   });
 
