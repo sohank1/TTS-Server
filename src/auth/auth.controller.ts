@@ -22,11 +22,11 @@ export class AuthController {
         return this.service.redirect(req, res);
     }
 
-    @Get("auth")
-    // @UseGuards(LoginAuthGuard)
-    public async getHash(@Req() req: Request, @Res() res: Response): Promise<void> {
-        return this.service.getHash(req, res);
-    }
+    // @Get("auth")
+    // // @UseGuards(LoginAuthGuard)
+    // public async getHash(@Req() req: Request, @Res() res: Response): Promise<void> {
+    //     return this.service.getHash(req, res);
+    // }
 
     @Get("logout")
     public logout(@Req() req: Request, @Res() res: Response): void {
