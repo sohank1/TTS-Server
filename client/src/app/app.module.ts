@@ -25,6 +25,7 @@ import { UserComponent } from './components/user/user.component';
 import { LogoutComponent } from './components/buttons/logout/logout.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { HomeLogoutComponent } from './components/buttons/home-logout/home-logout.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
     UserComponent,
     LogoutComponent,
     NotFoundComponent,
+    HomeLogoutComponent,
   ],
   imports: [
     CommonModule,

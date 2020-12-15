@@ -95,14 +95,16 @@ p {
 }
 
 app-login,
-app-join {
+app-join,
+app-home-logout {
     margin: 1rem 2rem;
     @include tablet {
         margin-left: 0;
     }
 }
 
-app-login {
+app-login,
+app-home-logout {
     @include tablet {
         margin-left: 3rem;
     }
