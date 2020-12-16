@@ -12,6 +12,8 @@ const extensions = [
     '.woff',
     '.ttf',
     '.svg',
+    '.mp3',
+    '.mp4',
 ];
 
 const resolvePath = (file: string) => resolve(`./client/dist/TTS-Client/${file}`);
