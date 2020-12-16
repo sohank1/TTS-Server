@@ -1,15 +1,18 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { promises as fs } from "fs";
+import { HttpException, HttpService, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { Model } from 'mongoose';
 import { UserResponseObject } from './types/UserResponseObject';
 import { User } from './user.schema';
+import { resolve } from "path";
 
 @Injectable()
 export class UserService {
     constructor(
         @InjectModel(User.name)
-        private UserModel: Model<User>
+        private UserModel: Model<User>,
+        private _http: HttpService
     ) { }
 
     public toResponseObject(doc: User): UserResponseObject {
@@ -45,5 +48,4 @@ export class UserService {
         if (!req.user) throw new HttpException('Please log in.', HttpStatus.UNAUTHORIZED);
         return this.toResponseObject(<User>req.user);
     }
-
 }
