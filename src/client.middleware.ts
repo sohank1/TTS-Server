@@ -21,6 +21,12 @@ const resolvePath = (file: string) => resolve(`./client/dist/TTS-Client/${file}`
 
 export class ClientMiddleware implements NestMiddleware {
     public use(req: Request, res: Response, next: NextFunction) {
+        const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+
+        if (process.env.NODE_ENV === 'production' && !fullUrl.startsWith('https')) {
+            res.redirect(fullUrl.replace('http', 'https'));
+        }
+
         const { baseUrl: url } = req;
 
         if (url.startsWith('/api')) {
