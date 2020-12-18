@@ -1,4 +1,5 @@
 .env
+./client/dist/TTS-Client/assets/temp
 
 # compiled output
 /dist

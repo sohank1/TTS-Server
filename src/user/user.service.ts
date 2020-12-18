@@ -52,7 +52,7 @@ export class UserService {
     public async getAvatar(req: Request, res: Response) {
         const user = this.toResponseObject(await this.UserModel.findOne({ id: req.params.id }));
 
-        const path = resolve(`./client/dist/TTS-Client/${user.id}.png`);
+        const path = resolve(`./client/dist/TTS-Client/assets/temp/${user.id}.png`);
         const writer = fs.createWriteStream(path);
         const r = await this._http.axiosRef({
             url: user.avatarUrl,
@@ -67,7 +67,7 @@ export class UserService {
             writer.on('finish', resolve);
             writer.on('error', reject);
         });
-        console.log(path);
+
         res.sendFile(path);
 
 
