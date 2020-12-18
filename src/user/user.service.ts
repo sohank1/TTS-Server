@@ -1,4 +1,4 @@
-import { promises as fs } from "fs";
+import * as fs from "fs";
 import { HttpException, HttpService, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Request, Response } from 'express';
@@ -47,5 +47,29 @@ export class UserService {
         console.log(req.cookies);
         if (!req.user) throw new HttpException('Please log in.', HttpStatus.UNAUTHORIZED);
         return this.toResponseObject(<User>req.user);
+    }
+
+    public async getAvatar(req: Request, res: Response) {
+        const user = this.toResponseObject(await this.UserModel.findOne({ id: req.params.id }));
+
+        const path = resolve(`./temp/${user.id}.png`);
+        const writer = fs.createWriteStream(path);
+        const r = await this._http.axiosRef({
+            url: user.avatarUrl,
+            method: 'get',
+            responseType: 'stream'
+        });
+        r.data.pipe(writer);
+
+
+
+        new Promise((resolve, reject) => {
+            writer.on('finish', resolve);
+            writer.on('error', reject);
+        });
+        console.log(path);
+        res.sendFile(path);
+
+
     }
 }
