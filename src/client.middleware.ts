@@ -22,7 +22,7 @@ const resolvePath = (file: string) => resolve(`./client/dist/TTS-Client/${file}`
 export class ClientMiddleware implements NestMiddleware {
     public use(req: Request, res: Response, next: NextFunction) {
         const reqUrl = req.headers.referer;
-        console.log(reqUrl);
+        console.log(req);
 
         if (process.env.NODE_ENV === 'production' && !reqUrl?.startsWith('https'))
            return res.redirect(reqUrl.replace("http", "https"));
