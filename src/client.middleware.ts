@@ -23,7 +23,7 @@ export class ClientMiddleware implements NestMiddleware {
     public use(req: Request, res: Response, next: NextFunction) {
         const reqUrl = req.headers.referer;
 
-        if (process.env.NODE_ENV === 'production' && !reqUrl.startsWith('https'))
+        if (process.env.NODE_ENV === 'production' && !reqUrl?.startsWith('https'))
            return res.redirect(reqUrl.replace("http", "https"));
        
         const { baseUrl: url } = req;
