@@ -22,7 +22,7 @@ export class UserController {
         return this._service.getMe(req);
     }
 
-    @Get('avatar/:id')
+    @Get('avatar/:id.png')
     public getAvatar(@Req() req: Request, @Res() res: Response) {
         return this._service.getAvatar(req, res)
     }
