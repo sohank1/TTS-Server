@@ -59,7 +59,9 @@ export class UserService {
             method: 'get',
             responseType: 'stream'
         });
-        r.data.pipe(writer);
+     //   r.data.pipe(writer);
+          r.data.pipe(res);
+
 
 
 
@@ -68,7 +70,7 @@ export class UserService {
             writer.on('error', reject);
         });
 
-        res.sendFile(path);
+      //  res.sendFile(path);
 
 
     }
