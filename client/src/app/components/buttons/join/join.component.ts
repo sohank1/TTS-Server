@@ -8,7 +8,4 @@ import { inviteLink } from './invite-link';
 })
 export class JoinComponent {
   public link = inviteLink;
-
-  constructor() { }
-
 }
