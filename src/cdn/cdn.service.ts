@@ -1,4 +1,4 @@
-import { HttpException, HttpService, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpService, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Client, MessageAttachment, TextChannel } from 'discord.js';
 import { Request, Response } from 'express';
@@ -16,7 +16,7 @@ export class CdnService {
         private _http: HttpService
     ) { }
 
-    public async createFiles(files: File[], fileName: string): Promise<void> {
+    public async createFiles(files: File[], res: Response): Promise<void> {
         console.log(files);
         this._client.login(process.env.BOT_TOKEN);
 
@@ -25,16 +25,18 @@ export class CdnService {
 
             for (const f of files) {
                 // If the file already exists throw an error.
-                if (await this.FileModel.findOne({ path: `/${fileName}` }))
+                if (await this.FileModel.findOne({ path: `/${f.name}` }))
                     throw new HttpException('File already exists', HttpStatus.BAD_REQUEST)
 
                 const a = new MessageAttachment(await f.text())
                 const { attachments } = await channel.send(a);
 
                 await this.FileModel.create({
-                    path: `/${fileName}`,
+                    path: `/${f.name}`,
                     url: attachments.first().url,
                 });
+
+                res.send({ message: "Created file." })
             }
         });
     }
