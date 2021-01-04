@@ -15,6 +15,6 @@ export class CdnController {
     public createFile(@Req() req: Request, @Res() res: Response): Promise<void> {
 
         //@ts-ignore
-        return this._service.createFiles(req.files, res);
+        return this._service.createFiles(req.file, res);
     }
 }
