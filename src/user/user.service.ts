@@ -1,11 +1,9 @@
-import * as fs from "fs";
 import { HttpException, HttpService, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Request, Response } from 'express';
 import { Model } from 'mongoose';
 import { UserResponseObject } from './types/UserResponseObject';
 import { User } from './user.schema';
-import { resolve } from "path";
 
 @Injectable()
 export class UserService {
@@ -49,29 +47,15 @@ export class UserService {
         return this.toResponseObject(<User>req.user);
     }
 
-    public async getAvatar(req: Request, res: Response) {
+    public async getAvatar(req: Request, res: Response): Promise<void> {
         const user = this.toResponseObject(await this.UserModel.findOne({ id: req.params.id }));
 
-        const path = resolve(`./client/dist/TTS-Client/assets/${user.id}.png`);
-        const writer = fs.createWriteStream(path);
         const r = await this._http.axiosRef({
             url: user.avatarUrl,
             method: 'get',
             responseType: 'stream'
         });
-     //   r.data.pipe(writer);
-          r.data.pipe(res);
 
-
-
-
-        new Promise((resolve, reject) => {
-            writer.on('finish', resolve);
-            writer.on('error', reject);
-        });
-
-      //  res.sendFile(path);
-
-
+        r.data.pipe(res);
     }
 }

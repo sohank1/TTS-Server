@@ -24,8 +24,8 @@ export class ClientMiddleware implements NestMiddleware {
 
         const { baseUrl: url } = req;
 
-        if (url.startsWith('/api')) {
-            // it starts with /api --> continue with execution
+        if (url.startsWith('/api') || url.startsWith('/cdn')) {
+            // it starts with /api or /cdn --> continue with execution
             next();
         }
         else if (extensions.filter(ext => url.indexOf(ext) > 0).length > 0) {

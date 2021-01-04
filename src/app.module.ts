@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { EventsModule } from './events/events.module';
 import { GuildModule } from './guild/guild.module';
 import { ClientMiddleware } from './client.middleware';
+import { CdnModule } from './cdn/cdn.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { ClientMiddleware } from './client.middleware';
     UserModule,
     EventsModule,
     GuildModule,
+    CdnModule,
   ],
   controllers: [AppController],
   providers: [AppService],
