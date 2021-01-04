@@ -13,8 +13,8 @@ export class CdnController {
 
     @Post()
     public createFile(@Req() req: Request, @Res() res: Response): Promise<void> {
-
+        console.log(req.files);
         //@ts-ignore
-        return this._service.createFiles(req.file, res);
+        return this._service.createFiles(req.files, res);
     }
 }
