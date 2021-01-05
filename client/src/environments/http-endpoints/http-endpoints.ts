@@ -5,4 +5,6 @@ export class HttpEndpoints {
 
     public ME = `${this.BASE_URL}/me`;
     public CONTENT = `${this.BASE_URL}/content`;
+
+    public CDN = 'http://localhost:8000/cdn';
 }

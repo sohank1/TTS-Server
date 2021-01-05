@@ -4,6 +4,7 @@ import { AppModule } from './app.module';
 import * as session from "express-session";
 import * as passport from "passport";
 import * as cookieParser from "cookie-parser";
+import * as fileUpload from 'express-fileupload';
 import { environment } from "./environment/environment";
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { NotFoundExceptionFilter } from './not-found-exception.filter';
@@ -28,6 +29,7 @@ async function bootstrap(): Promise<void> {
 
   app.use(passport.initialize());
   app.use(passport.session());
+  app.use(fileUpload());
 
   await app.listen(environment.PORT);
 }

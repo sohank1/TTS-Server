@@ -1,5 +1,10 @@
 <app-dashboard-nav [user]="user">
     <div class="content">
+        <form method="POST" id="formId" enctype="multipart/form-data">
+            <input type="file" name="fileUploaded">
+            <input (click)="fetchData(true)" type="submit">
+        </form>
+        <img *ngFor="let i of images" [src]="i.url" [alt]="i.path">
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.facere autem, earum laborum consectetur
             perferendis nobis nemvoluptas veritatis? Eaque velit inventore non quas vero!
             Laboriosam officia corrupti necessitatibus quia molestiae modi in error.</p>
