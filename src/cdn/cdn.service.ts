@@ -23,13 +23,9 @@ export class CdnService {
         for (const k in filesSent) files.push(filesSent[k]);
 
         files = files.map(f => {
-            const secondToLast = f.name.split(".")[f.name.split(".").length - 2]
-            const random = `-${Math.random().toString(36).substr(2, 7)}`;
-
-            f.name = insert(f.name, secondToLast.length, random);
-
+            f.name = this.genFileName(f.name);
             return f;
-        })
+        });
 
         console.log(files)
 
@@ -70,10 +66,28 @@ export class CdnService {
     public async getAll(): Promise<FileDoc[]> {
         return this.FileModel.find();
     }
+
+    /**
+     * Takes a file name like "Penguin's-Advanced-ZoneScrim-Wars-V4.1.png" and changes it to "Penguin's-Advanced-ZoneScrim-Wars-V4.1-aybfj2clkl.png" and returns it.
+     * @param name - The old name of the file
+     */
+    private genFileName(name: string): string {
+        // Generate random string.
+        const randomStr = `-${Math.random().toString(36).substr(2, 10)}`;
+
+        // Replace each "." with ",." and split it by "," to get "." in the split arr. "Penguin's-Advanced-ZoneScrim-Wars-V4.1.png" => ["Penguin's-Advanced-ZoneScrim-Wars-V4", ".1", "-aybfj2clkl", ".png"]
+        // The Ëß are 2 special chars. A file name should never include Ëß or the random string will be inserted somewhere else.
+        // It is "Ëß." because we want the element to start with "." instead of ending with it. "v1Ëß.4Ëß.jpg" => ["v1", ".4", "-a72qtaus68", ".jpg"] => "v1.4-a72qtaus68.jpg"
+        // If it was ".Ëß" then it would be v1.,4.,jpg => ["v1.", "4.", "-ypzgia4rrl", "jpg"] => "v1.4.-ypzgia4rrljpg" 
+        const arr = name.replace(/\./gi, "Ëß.").split("Ëß");
+
+        // Insert the random string in the second to last element ["Penguin's-Advanced-ZoneScrim-Wars-V4", ".1", ".png"] => ["Penguin's-Advanced-ZoneScrim-Wars-V4", ".1", "-i318oex8xz", ".png"]
+        arr.splice(arr.length - 1, 0, randomStr);
+        name = arr.join("");
+
+        return name;
+    }
 }
 
 
 
-function insert(str: string, index: number, value: string): string {
-    return str.substr(0, index) + value + str.substr(index);
-}
