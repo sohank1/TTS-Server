@@ -24,7 +24,9 @@ h2 {
     text-align: center;
 }
 
-img {
+img,
+video {
+    display: block;
     width: 45rem;
     margin: 0.5rem auto;
 }
@@ -43,4 +45,27 @@ img {
 
 .blue {
     color: blue;
+}
+
+form,
+.form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 10rem;
+}
+.mat-raised-button {
+    font-weight: $semi-bold;
+    padding: 0.5rem 3rem;
+    font-size: 1.5rem;
+    margin-right: 1rem;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+label {
+    display: block;
 }

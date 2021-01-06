@@ -1,10 +1,33 @@
 <app-dashboard-nav [user]="user">
-    <div class="content">
-        <form method="POST" id="formId" enctype="multipart/form-data">
-            <input type="file" name="fileUploaded">
-            <input (click)="fetchData(true)" type="submit">
-        </form>
-        <img *ngFor="let i of images" [src]="i.url" [alt]="i.path">
+    <div class="content" (dragover)="dragOver()" (dragleave)="dragLeave($event)" (drop)="drop($event)">
+        <div class="form">
+            <form (submit)="handleSubmit($event)" enctype="multipart/form-data">
+                <label class="mat-focus-indicator mat-raised-button mat-button-base mat-warn">
+                    Upload
+                    <input id="file-upload" type="file" name="file">
+                </label>
+
+
+                <button (click)="handleClick()" mat-raised-button color="primary">Submit</button>
+            </form>
+        </div>
+        <h1 *ngIf="showText">Drop</h1>
+        <div *ngFor="let f of files">
+            <div *ngIf="getFileType(f.url) === 'img'">
+                <img [src]="f.url">
+            </div>
+            <div *ngIf="getFileType(f.url) === 'vid'">
+                <video controls>
+                    <source [src]="f.url">
+                </video>
+            </div>
+            <div *ngIf="getFileType(f.url) === 'audio'">
+                <audio controls>
+                    <source [src]="f.url">
+                </audio>
+            </div>
+        </div>
+        <img>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.facere autem, earum laborum consectetur
             perferendis nobis nemvoluptas veritatis? Eaque velit inventore non quas vero!
             Laboriosam officia corrupti necessitatibus quia molestiae modi in error.</p>

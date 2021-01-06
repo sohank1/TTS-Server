@@ -36,7 +36,7 @@ export class CdnService {
             if (await this.FileModel.findOne({ path: `/${f.name}` }))
                 throw new HttpException('File already exists', HttpStatus.BAD_REQUEST)
 
-            const a = new MessageAttachment(f.data)
+            const a = new MessageAttachment(f.data, f.name)
             const { attachments } = await channel.send(a);
 
             await this.FileModel.create({
@@ -59,7 +59,7 @@ export class CdnService {
             responseType: 'stream',
             url: file.url,
         });
-
+        console.log(r)
         r.data.pipe(res);
     }
 

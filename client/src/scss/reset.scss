@@ -38,8 +38,8 @@ body {
   scroll-behavior: smooth;
   text-rendering: optimizeSpeed;
   line-height: 1.5;
-  font-family: "Open Sans";
-  color: white;
+  font-family: "Open Sans" !important;
+  color: white !important;
 }
 
 /* Set the core h1 defaults */
@@ -76,6 +76,10 @@ ol {
 @mixin mat-button {
   background: #191b2b;
 }
+
+// .mat-button-base {
+//   font-weight: $bold !important;
+// }
 
 .mat-button:hover {
   @include mat-button();
