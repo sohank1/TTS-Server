@@ -1,5 +1,5 @@
 <app-dashboard-nav [user]="user">
-    <div class="content" (dragover)="dragOver()" (dragleave)="dragLeave($event)" (drop)="drop($event)">
+    <div class="content" (dragover)="dragOver()" (dragleave)="dragLeave()" (drop)="drop($event)">
         <div class="form">
             <form (submit)="handleSubmit($event)" enctype="multipart/form-data">
                 <label class="mat-focus-indicator mat-raised-button mat-button-base mat-warn">
