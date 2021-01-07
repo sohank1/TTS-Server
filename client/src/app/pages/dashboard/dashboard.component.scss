@@ -25,9 +25,12 @@ h2 {
 }
 
 img,
-video {
+video,
+app-loading {
     display: block;
-    width: 45rem;
+    width: 50%;
+    min-width: 18rem;
+    max-width: 35rem;
     margin: 0.5rem auto;
 }
 
@@ -52,14 +55,17 @@ form,
     display: flex;
     justify-content: center;
     align-items: center;
-
     height: 10rem;
 }
 .mat-raised-button {
     font-weight: $semi-bold;
     padding: 0.5rem 3rem;
     font-size: 1.5rem;
-    margin-right: 1rem;
+    margin-right: 0.2rem;
+
+    &:last-of-type {
+        margin-left: 0.5rem;
+    }
 }
 
 input[type="file"] {
@@ -68,4 +74,10 @@ input[type="file"] {
 
 label {
     display: block;
+}
+
+app-loading {
+    display: block;
+
+    margin: 0 auto;
 }

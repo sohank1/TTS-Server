@@ -69,10 +69,14 @@ export class CdnService {
 
     /**
      * Takes a file name like "Penguin's-Advanced-ZoneScrim-Wars-V4.1.png" and changes it to "Penguin's-Advanced-ZoneScrim-Wars-V4.1-aybfj2clkl.png" and returns it.
+     * Changes any spaces to dashes.
      * @param name - The old name of the file
      */
     private genFileName(name: string): string {
-        // Generate random string.
+        // Replace each space with a dash.
+        name = name.replace(/s+/g, '-');
+
+        // Generate random 10 char string.
         const randomStr = `-${Math.random().toString(36).substr(2, 10)}`;
 
         // Replace each "." with ",." and split it by "," to get "." in the split arr. "Penguin's-Advanced-ZoneScrim-Wars-V4.1.png" => ["Penguin's-Advanced-ZoneScrim-Wars-V4", ".1", "-aybfj2clkl", ".png"]

@@ -5,24 +5,23 @@ section {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    animation: fade-out-section forwards 5s ease;
-}
 
-app-home {
-    opacity: 0;
-    animation: fade-out-page forwards 5s ease;
+    &.remove {
+        animation: fade-out-section forwards 1s ease;
+    }
 }
 
 img {
-    margin-top: 10vh;
-    width: 20rem;
+    width: 50%;
+    min-width: 18rem;
+    max-width: 35rem;
+    margin: 0 auto;
     animation: img forwards 1.5s ease;
     animation-iteration-count: infinite;
 }
 
 .fade {
-    animation: fade forwards 4s ease;
+    animation: fade forwards 1s ease;
 }
 
 h2 {
@@ -45,16 +44,6 @@ h2 {
     }
 
     to {
-        opacity: 1;
-    }
-}
-
-@keyframes fade-out-page {
-    90% {
-        opacity: 0;
-    }
-
-    100% {
         opacity: 1;
     }
 }
