@@ -20,14 +20,18 @@ export class CdnService {
     public async createFiles(filesSent: any, res: Response): Promise<void> {
 
         let files = [];
-        for (const k in filesSent) files.push(filesSent[k]);
+        for (const name in filesSent) {
+            for (const file in filesSent[name])
+                files.push(filesSent[name][file]);
+        }
+        console.log(files, "F")
 
         files = files.map(f => {
             f.name = this.genFileName(f.name);
             return f;
         });
 
-        console.log(files)
+        console.log(files, "F")
 
         const channel = <TextChannel>client.channels.cache.get('795712339785154582');
         console.log("sending")
@@ -59,7 +63,7 @@ export class CdnService {
             responseType: 'stream',
             url: file.url,
         });
-        console.log(r)
+        console.log(r.data);
         r.data.pipe(res);
     }
 

@@ -1,5 +1,6 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { UserAnimation } from 'src/app/components/user/user.animation';
 import { HttpService } from 'src/app/http/http.service';
 import { User } from 'src/app/http/user/user.type';
 import { environment } from 'src/environments/environment';
@@ -7,19 +8,36 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  animations: UserAnimation,
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   public user: User;
   public files: { url: string; path: string; }[] = [];
-  public progress;
+  public progress = 0;
   public showText = false;
+  public showUpload = false;
+
+  public get state(): string { return this.showUpload ? 'show' : 'remove'; }
+
 
   constructor(private _http: HttpService, private _httpClient: HttpClient) {
     this._http.user.getMe().then(u => this.user = u);
     this.fetchData().then(() => console.log(this.files))
 
-    // setInterval(() => { this.progress++; console.log(this.progress) }, 40)
+
+
+    // setInterval(() => { this.progress++; console.log(this.progress) }, 100)
+  }
+
+  public ngOnInit(): void {
+    const uploadContainer = <HTMLDivElement>document.querySelector(".upload-container");
+    document.onclick = (e) => {
+      if (e.target === uploadContainer) {
+        console.log(e.target)
+        uploadContainer.style.display = "none";
+      }
+    }
   }
 
 
@@ -45,13 +63,50 @@ export class DashboardComponent {
     });
   }
 
-  public handleClick(e: HTMLElementEventMap["click"]) {
-    e.preventDefault();
-    e.stopPropagation();
-    this.submitData();
+  public handleFileChange(): void {
+    this.showUpload = true;
+
+    // Wait till Angular change detection adds the upload container to the DOM.
+
+    setTimeout(() => {
+      const uploadContainer = document.querySelector('.upload-container');
+
+      for (const file of <File[]>Array.from(document.querySelector('input').files)) {
+        console.log(document.querySelector('input').files)
+        const imgContainer = document.createElement("div");
+        const img = document.createElement("img");
+        const h3 = document.createElement("h3");
+
+        imgContainer.classList.add('img-container');
+        img.src = URL.createObjectURL(file);
+        h3.innerText = file.name;
+        h3.classList.add('test-h3')
+
+        imgContainer.append(img, h3);
+        uploadContainer.appendChild(imgContainer);
+        console.log('bruh', this.showUpload);
+      }
+    }, 10);
   }
 
-  public dragOver(): void {
+  public addFile(e: HTMLElementEventMap["click"]): void {
+
+    document.querySelector("input").click();
+  }
+
+  public handleClick(e: HTMLElementEventMap["click"]): void {
+    e.preventDefault();
+    this.submitData();
+    this.showUpload = false;
+  }
+
+  public dragOver(e: HTMLElementEventMap["dragover"]): void {
+    e.preventDefault();
+    console.log(e.dataTransfer.items)
+    // If one of the dragged items is not a file then return.
+    for (const item of Array.from(e.dataTransfer.items))
+      if (item.kind !== "file") return;
+
     this.showText = true;
   }
 
@@ -62,18 +117,18 @@ export class DashboardComponent {
   public drop(e: HTMLElementEventMap["drop"]): void {
     e.preventDefault();
     this.showText = false;
-    console.log(e)
 
     // https://www.smashingmagazine.com/2018/01/drag-drop-file-uploader-vanilla-js/
-    const arr = Array.from(e.dataTransfer.files);
-    for (const el of arr) {
-      const img = document.createElement("img")
-      img.src = URL.createObjectURL(el);
-      document.querySelector("div").appendChild(img);
-    }
+    for (const item of Array.from(e.dataTransfer.items))
+      if (item.kind !== "file") return;
 
+    document.querySelector('input').files = e.dataTransfer.files;
+    this.handleFileChange();
 
+  }
 
+  public preventDefault(e: HTMLElementEventMap["submit"]): void {
+    e.preventDefault();
   }
 
   public async fetchData(): Promise<void> {
