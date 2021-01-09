@@ -104,3 +104,24 @@ app-loading {
     color: green;
     text-align: center;
 }
+
+.file {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+
+    img,
+    video,
+    audio {
+        margin: 0 !important;
+    }
+
+    @include tablet {
+        flex-direction: row;
+    }
+}
+.delete {
+    // margin-left: -3rem;
+}

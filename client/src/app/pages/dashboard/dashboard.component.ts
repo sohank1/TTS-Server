@@ -63,6 +63,12 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  public async deleteFile(url: string): Promise<void> {
+    await this._httpClient.delete(url).toPromise();
+    this.fetchData();
+  }
+
+
   public handleFileChange(): void {
     this.showUpload = true;
 
@@ -144,6 +150,7 @@ export class DashboardComponent implements OnInit {
 
     this.files = this.files.reverse();
   }
+
 
   public getFileType(url: string): string {
     const imgExtensions = ["png", "jpg", "jpeg"];

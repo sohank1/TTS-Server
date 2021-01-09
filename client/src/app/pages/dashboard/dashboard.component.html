@@ -18,7 +18,7 @@
         </div>
 
         <h1 *ngIf="showText">Drop</h1>
-        <!-- <div *ngFor=" let f of files">
+        <div class="file" *ngFor="let f of files">
             <div *ngIf="getFileType(f.url) === 'img'">
                 <img [src]="f.url">
             </div>
@@ -31,8 +31,10 @@
                 <audio controls>
                     <source [src]="f.url">
                 </audio>
-            </div> -->
-        <!-- </div> -->
+            </div>
+
+            <!-- <button (click)="deleteFile(f.url)" class="delete" mat-raised-button color="accent">Delete</button> -->
+        </div>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.facere autem, earum laborum consectetur
             perferendis nobis nemvoluptas veritatis? Eaque velit inventore non quas vero!
             Laboriosam officia corrupti necessitatibus quia molestiae modi in error.</p>

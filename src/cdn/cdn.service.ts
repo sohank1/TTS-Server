@@ -63,12 +63,29 @@ export class CdnService {
             responseType: 'stream',
             url: file.url,
         });
-        console.log(r.data);
         r.data.pipe(res);
     }
 
     public async getAll(): Promise<FileDoc[]> {
         return this.FileModel.find();
+    }
+
+    public async deleteFile(req: Request): Promise<{ message: string; status: number; }> {
+        console.log(req.url)
+        // const path = req.url.split('/cdn')[1];
+
+        // const file = await this.FileModel.findOne({ path });
+        // if (!file) throw new HttpException('File not found', HttpStatus.NOT_FOUND);
+
+        // try {
+        //     await file.delete();
+        // }
+
+        // catch (err) {
+        //     throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
+        // }
+
+        return { "message": "Deleted file.", status: 200 };
     }
 
     /**
