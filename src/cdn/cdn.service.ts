@@ -27,6 +27,7 @@ export class CdnService {
         console.log(files, "F")
 
         files = files.map(f => {
+            console.log(".map()", f); 
             f.name = this.genFileName(f.name);
             return f;
         });
@@ -94,6 +95,7 @@ export class CdnService {
      * @param name - The old name of the file
      */
     private genFileName(name: string): string {
+        console.log('genFileName() { name }', name, "replace",  name.replace(/s+/g, '-'));
         // Replace each space with a dash.
         name = name.replace(/s+/g, '-');
 
