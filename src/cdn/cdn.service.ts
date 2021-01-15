@@ -104,6 +104,7 @@ export class CdnService {
         // The Ëß are 2 special chars. A file name should never include Ëß or the random string will be inserted somewhere else.
         // It is "Ëß." because we want the element to start with "." instead of ending with it. "v1Ëß.4Ëß.jpg" => ["v1", ".4", "-a72qtaus68", ".jpg"] => "v1.4-a72qtaus68.jpg"
         // If it was ".Ëß" then it would be v1.,4.,jpg => ["v1.", "4.", "-ypzgia4rrl", "jpg"] => "v1.4.-ypzgia4rrljpg" 
+        console.log(`Name: ${name} Replace: ${name.replace(/\./gi, "Ëß.")} Split: ${name.replace(/\./gi, "Ëß.").split("Ëß")} `);
         const arr = name.replace(/\./gi, "Ëß.").split("Ëß");
 
         // Insert the random string in the second to last element ["Penguin's-Advanced-ZoneScrim-Wars-V4", ".1", ".png"] => ["Penguin's-Advanced-ZoneScrim-Wars-V4", ".1", "-i318oex8xz", ".png"]
