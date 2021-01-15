@@ -26,10 +26,10 @@ export class CdnService {
         }
         console.log(files, "F")
 
-        files = files.map(f => {
-            console.log(".map()", f); 
-            f.name = this.genFileName(f);
-            return f;
+        files = files.map(n => {
+            console.log(".map()", n); 
+            n = this.genFileName(n);
+            return n;
         });
 
         console.log(files, "F")
