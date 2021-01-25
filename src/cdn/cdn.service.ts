@@ -18,7 +18,7 @@ export class CdnService {
     ) { }
 
     public async createFiles(filesSent: any, res: Response): Promise<void> {
-
+        console.log("filesSent", filesSent);
         let files = [];
         for (const name in filesSent) {
             for (const file in filesSent[name])
@@ -26,9 +26,10 @@ export class CdnService {
         }
         console.log(files, "F")
 
-        files = files.map(f => {
-            f.name = this.genFileName(f.name);
-            return f;
+        files = files.map(n => {
+            console.log(".map()", n); 
+            n = this.genFileName(n);
+            return n;
         });
 
         console.log(files, "F")
