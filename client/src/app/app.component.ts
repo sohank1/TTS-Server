@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+import AOS from 'aos';
 
 @Component({
   selector: 'app-root',
@@ -8,4 +8,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   public title = 'TTS-Client';
+
+  constructor() {
+    setInterval(() => AOS.init({ duration: 750 }), 1);
+  }
 }
