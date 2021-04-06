@@ -1,40 +1,5 @@
 <app-dashboard-nav [user]="user">
-    <div class="content" (dragover)="dragOver($event)" (dragleave)="dragLeave()" (dragend)="dragLeave()"
-        (drop)="drop($event)">
-        <div class="form">
-            <form enctype="multipart/form-data" (submit)="preventDefault($event)">
-
-                <input (change)="handleFileChange()" id="file-upload" type="file" name="file">
-                <button (click)="addFile($event)" mat-raised-button color="warn">Upload</button>
-
-            </form>
-        </div>
-
-        <app-loading *ngIf="progress" [stop]="progress >= 100"></app-loading>
-
-        <div *ngIf="showUpload" [@detail]="state" class="upload-container">
-            <h2>Upload a file</h2>
-            <button (click)="handleClick($event)" mat-raised-button color="primary">Submit</button>
-        </div>
-
-        <h1 *ngIf="showText">Drop</h1>
-        <div class="file" *ngFor="let f of files">
-            <div *ngIf="getFileType(f.url) === 'img'">
-                <img [src]="f.url">
-            </div>
-            <div *ngIf="getFileType(f.url) === 'vid'">
-                <video controls>
-                    <source [src]="f.url">
-                </video>
-            </div>
-            <div *ngIf="getFileType(f.url) === 'audio'">
-                <audio controls>
-                    <source [src]="f.url">
-                </audio>
-            </div>
-
-            <!-- <button (click)="deleteFile(f.url)" class="delete" mat-raised-button color="accent">Delete</button> -->
-        </div>
+    <div class="content">
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.facere autem, earum laborum consectetur
             perferendis nobis nemvoluptas veritatis? Eaque velit inventore non quas vero!
             Laboriosam officia corrupti necessitatibus quia molestiae modi in error.</p>
