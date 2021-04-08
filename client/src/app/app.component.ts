@@ -10,7 +10,11 @@ export class AppComponent {
   public title = 'TTS-Client';
 
   constructor() {
-    setTimeout(() => AOS.init({ duration: 750 }), 700);
-    AOS.refresh()
+    AOS.init({ duration: 750 })
+    if (document.readyState == 'complete') {
+    AOS.refresh();
+}
+//     setTimeout(() => AOS.init({ duration: 750 }), 700);
+    AOS.refreshHard()
   }
 }
