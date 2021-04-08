@@ -11,5 +11,6 @@ export class AppComponent {
 
   constructor() {
     setTimeout(() => AOS.init({ duration: 750 }), 700);
+    AOS.refresh()
   }
 }
