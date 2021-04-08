@@ -11,10 +11,11 @@ export class AppComponent {
 
   constructor() {
     AOS.init({ duration: 750 })
-    if (document.readyState == 'complete') {
-    AOS.refresh();
-}
-//     setTimeout(() => AOS.init({ duration: 750 }), 700);
-    AOS.refreshHard()
+    let scrollRef = 0;
+
+    window.addEventListener('scroll', function() {
+    // increase value up to 10, then refresh AOS
+      scrollRef <= 10 ? scrollRef++ : AOS.refresh();
+    });
   }
 }
