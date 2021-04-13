@@ -1,4 +1,5 @@
 export enum Events {
-    NEW_USER = 'NEW_USER',
-    USER_UPDATE = 'USER_UPDATE'
+    LOGIN = 'login',
+    NEW_USER = 'new-user',
+    USER_UPDATE = 'user-update'
 }

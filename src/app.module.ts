@@ -12,11 +12,12 @@ import { CdnModule } from './cdn/cdn.module';
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.MONGO_URI),
+    EventsModule,
     AuthModule,
     UserModule,
-    EventsModule,
     GuildModule,
     CdnModule,
+    EventsModule
   ],
   controllers: [AppController],
   providers: [AppService],
