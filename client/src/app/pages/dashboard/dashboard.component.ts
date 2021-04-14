@@ -24,7 +24,7 @@ export class DashboardComponent implements OnInit {
 
 
   constructor(private _http: HttpService, private _httpClient: HttpClient) {
-    setTimeout(() => this.ready = true, 60)
+   // setTimeout(() => this.ready = true, 60)
     // this._http.user.getMe().then(u => this.user = u);
     socket.emit("auth", { accessToken: localStorage.getItem("@tts/token") })
     socket.on("auth-success", ({ user }: { user: User }) => {
