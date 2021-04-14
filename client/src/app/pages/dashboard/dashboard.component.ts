@@ -18,7 +18,7 @@ export class DashboardComponent implements OnInit {
   public progress = 0;
   public showText = false;
   public showUpload = false;
-  public ready = false;
+  public ready = true;
 
   public get state(): string { return this.showUpload ? 'show' : 'remove'; }
 
