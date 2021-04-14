@@ -17,11 +17,6 @@ export class UserController {
         return this._service.get(id);
     }
 
-    @Get('me')
-    public getMe(@Req() req: Request): Promise<UserResponseObject> {
-        return this._service.getMe(req);
-    }
-
     @Get('avatar/:id.png')
     public getAvatar(@Req() req: Request, @Res() res: Response) {
         return this._service.getAvatar(req, res)

@@ -20,11 +20,4 @@ export class AppComponent {
       scrollRef <= 10 ? scrollRef++ : AOS.refresh();
     });
   }
-
-  ngOnInit() {
-    const socket = io(environment.httpEndpoints.URL);
-    console.log("got socket", socket)
-    socket.emit("message", Math.random())
-    socket.on("message", console.log)
-  }
 }

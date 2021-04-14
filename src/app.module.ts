@@ -12,7 +12,6 @@ import { CdnModule } from './cdn/cdn.module';
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.MONGO_URI),
-    EventsModule,
     AuthModule,
     UserModule,
     GuildModule,

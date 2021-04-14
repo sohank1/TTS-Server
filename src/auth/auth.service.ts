@@ -1,39 +1,51 @@
 import { HttpException, HttpService, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
+import { JwtService } from '@nestjs/jwt';
 import { User } from "src/user/user.schema";
 import { Model } from "mongoose";
-import { Profile } from "passport-discord";
 import { getTag } from "src/user/util/get-tag.util";
-import { EventsGateway } from "src/events/events.gateway";
+// import { EventsGateway } from "src/events/events.gateway";
 import { getAvatarUrl } from "src/user/util/get-avatar-url.util";
 import { Request, Response } from "express";
 import { environment } from "src/environment/environment";
 import { UserService } from "src/user/user.service";
 import { Guild } from "src/guild/guild.schema";
 import { getIconUrl } from "src/guild/util/get-icon.util";
+import { UserResponseObject } from "src/user/types/UserResponseObject";
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const DiscordOauth = require("discord-oauth2");
 
 @Injectable()
 export class AuthService {
+    public oauth = new DiscordOauth({
+        clientId: process.env.CLIENT_ID,
+        clientSecret: process.env.CLIENT_SECRET,
+        redirectUri: environment.REDIRECT_URL,
+        version: "v8"
+    });
+
     constructor(
         @InjectModel(User.name)
         private UserModel: Model<User>,
         @InjectModel(Guild.name)
         private GuildModel: Model<Guild>,
-        private events: EventsGateway,
+        // private events: EventsGateway,
         private _userService: UserService,
-        private _http: HttpService
+        private _http: HttpService,
+        private _jwt: JwtService
     ) { }
 
-    public async validateUser(accessToken: string, refreshToken: string, profile: Profile, done: (err: Error, user?: User) => void): Promise<User> {
+    public async validateUser(data: { id: string; username: string; avatar: string; discriminator: string; }): Promise<User> {
         try {
             // await this.GuildModel.create({ iconUrl: '', members: [], name: '', roles: [] });
             const tts = await this.fetchUsers();
             await this.fetchGuild(tts);
 
-            const user = await this.UserModel.findOne({ id: profile.id });
+            const user = await this.UserModel.findOne({ id: data.id });
             if (user) {
-                const url = getAvatarUrl(profile.id, profile.avatar);
-                const tag = getTag(profile.username, profile.discriminator);
+                const url = getAvatarUrl(data.id, data.avatar);
+                const tag = getTag(data.username, data.discriminator);
 
                 if (user.avatarUrl === url && user.tag === tag) return user;
 
@@ -43,36 +55,44 @@ export class AuthService {
                 user.tag = tag;
 
                 await user.save();
-                this.events.emitUserUpdate(this._userService.toResponseObject(user));
-                done(null, user);
+                // this.events.emitUserUpdate(this._userService.toResponseObject(user));
                 return user;
 
             } else {
-                const url = getAvatarUrl(profile.id, profile.avatar);
+                const url = getAvatarUrl(data.id, data.avatar);
 
                 const newUser = new this.UserModel({
-                    id: profile.id,
-                    tag: getTag(profile.username, profile.discriminator),
+                    id: data.id,
+                    tag: getTag(data.username, data.discriminator),
                     avatarUrl: url.includes("null")
                         ? "https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png"
                         : url,
                 });
 
                 await newUser.save();
-                this.events.emitNewUser(this._userService.toResponseObject(newUser));
-                done(null, newUser);
-                return user;
+                // this.events.emitNewUser(this._userService.toResponseObject(newUser));
             }
         } catch (err) {
             console.log(err);
-            done(err, null);
-            return null;
         }
+    }
+    public async login(res: Response): Promise<void> {
+        res.redirect(this.oauth.generateAuthUrl({
+            scope: ["identify", "guilds"]
+        }));
     }
 
     public async redirect(req: Request, res: Response): Promise<void> {
-        console.log(req.user)
-        res.redirect(environment.CLIENT_DASHBOARD_URL);
+
+        const { access_token: discordAccessToken } = await this.oauth.tokenRequest({
+            code: req.query.code,
+            grantType: "authorization_code",
+            scope: ["identify", "guilds"],
+        })
+        const user = await this.oauth.getUser(discordAccessToken);
+        await this.validateUser(user);
+
+        res.redirect(`${environment.CLIENT_BASE_URL}?accessToken=${this._jwt.sign({ userId: user.id }, { expiresIn: "60s" })}`);
     }
 
     public logout(req: Request, res: Response): void {
@@ -82,6 +102,11 @@ export class AuthService {
 
         req.query.redirect ? res.redirect(<string>req.query.redirect)
             : res.redirect(environment.CLIENT_BASE_URL);
+    }
+
+    public async me(accessToken: string): Promise<UserResponseObject> {
+        const { userId } = <{ userId: string }>this._jwt.decode(accessToken);
+        return this._userService.get(userId);
     }
 
     public async fetchUsers(): Promise<Guild> {

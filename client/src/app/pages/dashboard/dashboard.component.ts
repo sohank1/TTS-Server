@@ -2,6 +2,7 @@ import { HttpClient, HttpEventType } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { UserAnimation } from 'src/app/components/user/user.animation';
 import { HttpService } from 'src/app/http/http.service';
+import { socket } from 'src/app/http/socket';
 import { User } from 'src/app/http/user/user.type';
 import { environment } from 'src/environments/environment';
 
@@ -17,12 +18,18 @@ export class DashboardComponent implements OnInit {
   public progress = 0;
   public showText = false;
   public showUpload = false;
+  public ready = false;
 
   public get state(): string { return this.showUpload ? 'show' : 'remove'; }
 
 
   constructor(private _http: HttpService, private _httpClient: HttpClient) {
-    this._http.user.getMe().then(u => this.user = u);
+    setTimeout(() => this.ready = true, 60)
+    // this._http.user.getMe().then(u => this.user = u);
+    socket.emit("auth", { accessToken: localStorage.getItem("@tts/token") })
+    socket.on("auth-success", ({ user }: { user: User }) => {
+      this.user = user;
+    });
     this.fetchData().then(() => console.log(this.files))
 
 

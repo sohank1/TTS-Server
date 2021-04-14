@@ -40,13 +40,6 @@ export class UserService {
         return this.toResponseObject(await this.UserModel.findOne({ id }));
     }
 
-    public async getMe(req: Request): Promise<UserResponseObject> {
-        console.log(req.session);
-        console.log(req.cookies);
-        if (!req.user) throw new HttpException('Please log in.', HttpStatus.UNAUTHORIZED);
-        return this.toResponseObject(<User>req.user);
-    }
-
     public async getAvatar(req: Request, res: Response): Promise<void> {
         const user = this.toResponseObject(await this.UserModel.findOne({ id: req.params.id }));
 
