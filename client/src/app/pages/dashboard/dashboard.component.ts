@@ -18,13 +18,13 @@ export class DashboardComponent implements OnInit {
   public progress = 0;
   public showText = false;
   public showUpload = false;
-  public ready = false;
+  public ready = true;
 
   public get state(): string { return this.showUpload ? 'show' : 'remove'; }
 
 
   constructor(private _http: HttpService, private _httpClient: HttpClient) {
-    setTimeout(() => this.ready = true, 60)
+   // setTimeout(() => this.ready = true, 60)
     // this._http.user.getMe().then(u => this.user = u);
     socket.emit("auth", { accessToken: localStorage.getItem("@tts/token") })
     socket.on("auth-success", ({ user }: { user: User }) => {
