@@ -92,7 +92,7 @@ export class AuthService {
         const user = await this.oauth.getUser(discordAccessToken);
         await this.validateUser(user);
 
-        res.redirect(`${environment.CLIENT_BASE_URL}?accessToken=${this._jwt.sign({ userId: user.id }, { expiresIn: "60s" })}`);
+        res.redirect(`${environment.CLIENT_BASE_URL}?accessToken=${this._jwt.sign({ userId: user.id }, { expiresIn: "60s" })}&refreshToken=${this._jwt.sign({ userId: user.id }, { expiresIn: "2m" })}`);
     }
 
     public logout(req: Request, res: Response): void {

@@ -7,7 +7,7 @@ class Dev {
     public BASE_URL = `http://localhost:${this.PORT}/api`;
     public REDIRECT_URL = `${this.BASE_URL}/login/redirect`;
 
-    public CLIENT_BASE_URL = "http://localhost:4200";
+    public CLIENT_BASE_URL = "http://localhost:3000";
     public CLIENT_DASHBOARD_URL = `${this.CLIENT_BASE_URL}/dashboard`;
 }
 
@@ -18,7 +18,7 @@ class Prod {
     public BASE_URL = `https://tts-api-prod.herokuapp.com/api`;
     public REDIRECT_URL = `${this.BASE_URL}/login/redirect`;
 
-    public CLIENT_BASE_URL = `https://tts-api-prod.herokuapp.com`;
+    public CLIENT_BASE_URL = `https://ttsclan.vercel.app`;
     public CLIENT_DASHBOARD_URL = `${this.CLIENT_BASE_URL}/dashboard`;
 }
 
