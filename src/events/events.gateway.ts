@@ -35,18 +35,26 @@ export class EventsGateway implements OnGatewayConnection {
             }
 
             socket.emit("auth-success", user);
+        })
 
-            socket.on("get-user", async (id: string) => {
-                const user = await this._userService.get(id);
-                if (!user) return socket.emit("got-user", {
-                    error: {
-                        message: "User not found",
-                        code: HttpStatus.NOT_FOUND
-                    }
-                })
 
-                socket.emit("got-user", user)
+        socket.on("get-user", async (id: string) => {
+            let user: UserResponseObject;
+            try {
+                user = await this._userService.get(id);
+            } catch { }
+            if (!user) return socket.emit("fetch-done-get-user", {
+                error: {
+                    message: "User not found",
+                    code: HttpStatus.NOT_FOUND
+                }
             })
+
+            socket.emit("fetch-done-get-user", user)
+        })
+
+        socket.on("get-users", async () => {
+            socket.emit("fetch-done-get-users", await this._userService.getAll())
         })
     }
 
