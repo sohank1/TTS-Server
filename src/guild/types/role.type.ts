@@ -3,7 +3,7 @@ export interface Role {
     name: string;
     permissions: string;
     position: number;
-    color: number;
+    color: string;
     hoist: boolean;
     managed: boolean;
     mentionable: boolean;

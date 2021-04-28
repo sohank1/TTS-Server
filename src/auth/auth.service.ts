@@ -120,17 +120,20 @@ export class AuthService {
             .subscribe(async (r) => {
                 tts.members = [];
                 for (const m of r.data)
-                    if (!m.user.bot)
+                    if (!m.user.bot) {
+
+
+                        const roles = m.roles.map((id: string) => tts.roles.find(r => r.id === id));
+
                         tts.members.push({
                             id: m.user.id,
                             username: m.user.username,
                             discriminator: m.user.discriminator,
                             bot: m.user.bot ? true : false,
-
-                            roles: m.roles.map((id: string) => tts.roles.find(r => r.id === id)),
+                            roles,
                             joinedAt: new Date(m.joined_at),
                         });
-
+                    }
             });
         return tts;
     }
@@ -143,6 +146,11 @@ export class AuthService {
         })
 
             .subscribe(async (r) => {
+
+                for (const role of r.data.roles) {
+                    role.color = `#${role.color.toString(16).padStart(6, '0')}`;
+                }
+
                 tts.id = r.data.id;
                 tts.name = r.data.name;
                 tts.iconUrl = getIconUrl(tts.id, r.data.icon);

@@ -23,7 +23,7 @@ export class UserComponent {
   constructor(private _http: HttpService) {
     this._http.content.get().then(c => {
       this.roles = c.members.find(m => m.id === this.user.id).roles;
-      this.convertColors();
+      // this.convertColors();
     });
   }
 

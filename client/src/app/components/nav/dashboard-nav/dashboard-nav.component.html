@@ -27,8 +27,10 @@
             </section>
 
 
-            <app-user *ngIf="user" [user]="user"></app-user>
-            <app-login *ngIf="!user"></app-login>
+            <!-- <app-user *ngIf="user" [user]="user"></app-user> -->
+            <app-user [user]="userTest"></app-user>
+
+            <!-- <app-login *ngIf="!user"></app-login> -->
 
         </div>
 
