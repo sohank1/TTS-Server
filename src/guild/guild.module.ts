@@ -10,6 +10,7 @@ import { GuildService } from './guild.service';
             { name: Guild.name, schema: GuildSchema }
         ])
     ],
+    exports: [GuildService],
     controllers: [GuildController],
     providers: [GuildService]
 })
