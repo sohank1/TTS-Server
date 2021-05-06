@@ -78,7 +78,8 @@ export class AuthService {
     }
     public async login(res: Response): Promise<void> {
         res.redirect(this.oauth.generateAuthUrl({
-            scope: ["identify", "guilds"]
+            scope: ["identify", "guilds"],
+            prompt: "none",
         }));
     }
 
